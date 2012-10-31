@@ -1,0 +1,9 @@
+{
+  "name": "jquery-waitformatch",
+  "version": "0.1.0",
+  "main": "./lib/jquery-waitformatch",
+  "dependencies": {
+    "dict.js": "https://github.com/virtru/dict.js.git",
+    "jquery": "*"
+  }
+}
