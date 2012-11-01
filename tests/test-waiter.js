@@ -1,7 +1,7 @@
 var assert = chai.assert;
 
 
-describe('jquery.match - high level', function() {
+describe('jquery.waiter - high level', function() {
   /**
    * Delays function by short time
    */
@@ -47,9 +47,9 @@ describe('jquery.match - high level', function() {
     testAreaContainer.remove();
   });
 
-  describe("match('on', ...)", function() {
+  describe("waiter('on', ...)", function() {
     it('detects a new div in testArea', function(done) {
-      testArea.waitForMatch('div', function(matches) {
+      testArea.waiter('on', 'div', function(matches) {
         matchIsElement(matches, 'div', 'test1');
         done();
       });
@@ -59,7 +59,7 @@ describe('jquery.match - high level', function() {
     });
 
     it('detects div#test2 appended in testArea', function(done) {
-      testArea.waitForMatch('div#test2', function(matches) {
+      testArea.waiter('on', 'div#test2', function(matches) {
         matchIsElement(matches, 'div', 'test2');
         done();
       });
@@ -70,14 +70,14 @@ describe('jquery.match - high level', function() {
 
     it('detects div#test3 already in the testArea', function(done) {
       testArea.append('<div id="test3"></div>');
-      testArea.waitForMatch('div#test3', function(matches) {
+      testArea.waiter('on', 'div#test3', function(matches) {
         matchIsElement(matches, 'div', 'test3');
         done();
       });
     });
 
     it('detects multiple divs added in the testArea', function(done) {
-      testArea.waitForMatch('div', function(matches) {
+      testArea.waiter('on', 'div', function(matches) {
         assert.lengthOf(matches, 3);
         done();
       });
@@ -87,7 +87,7 @@ describe('jquery.match - high level', function() {
     });
 
     it('detects div added with innerHTML', function(done) {
-      testArea.waitForMatch('div', function(matches) {
+      testArea.waiter('on', 'div', function(matches) {
         matchIsElement(matches, 'div', 'test5');
         done();
       });
@@ -96,5 +96,87 @@ describe('jquery.match - high level', function() {
         rawTestAreaEl.innerHTML = '<div id="test5"></div>';
       });
     });
+
+    it('detects continuously', function(done) {
+      var counter = 5
+      testArea.waiter('on', 'div', { continuous: true }, function(matches) {
+        counter -= 1;
+        if(counter == 0) {
+          done();
+        }
+      });
+
+      var timeoutId;
+      var timeoutFunc = function() {
+        testArea.append('<div></div>');
+        if(counter > 1) {
+          timeoutId = setTimeout(timeoutFunc, 0.5);
+        }
+      };
+      timeoutFunc();
+    });
+  });
+
+  describe("waiter('off', ...)", function() {
+    var waiterCalls = 0;
+    beforeEach(function() {
+      waiterCalls = 0;
+    });
+    
+    function callback() {
+      waiterCalls += 1;
+    };
+
+    function simpleWaiter(selector) {
+      selector = selector || 'div';
+      testArea.waiter('on', selector, callback);
+    }
+
+    it('turns off a waiter that never runs', function() {
+      simpleWaiter('div');
+      testArea.waiter('off', 'div', callback);
+      assert.equal(waiterCalls, 0);
+    });
+
+    it('attempts to turn off a waiter after it is called', function(done) {
+      simpleWaiter('div');
+      shortDelay(function() {
+        testArea.append('<div></div>');
+        shortDelay(function() {
+          testArea.waiter('off', 'div', callback);
+          assert.equal(waiterCalls, 1);
+          done();
+        });
+      });
+    });
+    
+    it('turns off a continuous waiter', function(done) {
+      testArea.waiter('on', 'span', { continuous: true }, callback);
+      
+      var counter = 0;
+
+      var finish = function() {
+        testArea.waiter('off', 'span', callback);
+        assert.equal(waiterCalls, 5);
+        testArea.append('<span></span>');
+        shortDelay(function() {
+          assert.equal(waiterCalls, 5);
+          done();
+        });
+      };
+
+      var timeoutId;
+      var timeoutFunc = function() {
+        testArea.append('<span></span>');
+        counter += 1
+        if(counter < 5) {
+          timeoutId = setTimeout(timeoutFunc, 0.5);
+        } else {
+          timeoutId = setTimeout(finish, 0.5);
+        }
+      };
+      timeoutFunc();
+    });
+
   });
 });

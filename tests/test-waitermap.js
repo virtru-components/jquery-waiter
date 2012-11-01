@@ -52,4 +52,57 @@ describe('WaiterMap - internal class', function() {
       assert.equal(map.get('span', f2), callback2);
     });
   });
+
+  describe('#remove', function() {
+    var map;
+    var callback;
+
+    var testCallback = function(selector, func) {
+      callback.apply(null, arguments);
+    };
+
+    beforeEach(function() {
+      map = new WaiterMap();
+      map.add('div', f1, _.bind(testCallback, null, 'div', f1));
+      map.add('div', f2, _.bind(testCallback, null, 'div', f2));
+      map.add('div', f3, _.bind(testCallback, null, 'div', f3));
+      map.add('somename', f1, _.bind(testCallback, null, ['somename', f1]));
+      map.add('a different name', f1, 
+              _.bind(testCallback, null, ['a different name', f1]));
+    });
+
+    it('should remove a callback', function(done) {
+      callback = function() {
+        assert.isUndefined(map.get('div', f1));
+        assert.isDefined(map.get('div', f2));
+        done();
+      };
+      map.remove('div', f1, function(stopWaiting) {
+        stopWaiting();
+      });
+    });
+
+    it('should remove multiple callbacks', function(done) {
+      var counter = 5;
+      callback = function() {
+        counter -= 1;
+        if(counter == 0) {
+          assert.isUndefined(map.get('div', f1));
+          assert.isUndefined(map.get('div', f2));
+          assert.isUndefined(map.get('div', f3));
+          assert.isUndefined(map.get('somename', f1));
+          assert.isUndefined(map.get('a different name', f1));
+          done();
+        }
+      };
+      var stopWaiter = function(stopWaiting) {
+        stopWaiting();
+      };
+      map.remove('div', f1, stopWaiter);
+      map.remove('div', f2, stopWaiter);
+      map.remove('div', f3, stopWaiter);
+      map.remove('somename', f1, stopWaiter);
+      map.remove('a different name', f1, stopWaiter);
+    });
+  });
 });
