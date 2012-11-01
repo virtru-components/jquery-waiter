@@ -105,4 +105,32 @@ describe('WaiterMap - internal class', function() {
       map.remove('a different name', f1, stopWaiter);
     });
   });
+
+  describe('#removeAll', function() {
+    var map;
+    var callbackCount = 0;
+
+    var testCallback = function(selector, func) {
+      callbackCount += 1;
+    };
+
+    beforeEach(function() {
+      callbackCount = 0;
+      map = new WaiterMap();
+      map.add('div', f1, _.bind(testCallback, null, 'div', f1));
+      map.add('div', f2, _.bind(testCallback, null, 'div', f2));
+      map.add('div', f3, _.bind(testCallback, null, 'div', f3));
+      map.add('somename', f1, _.bind(testCallback, null, ['somename', f1]));
+      map.add('a different name', f1, 
+              _.bind(testCallback, null, ['a different name', f1]));
+    });
+
+    it('should remove all of the callbacks', function() {
+      map.removeAll('div', function(stopWaiting) {
+        stopWaiting();
+      });
+      assert.equal(callbackCount, 3);
+      assert.isDefined(map.get('somename', f1));
+    });
+  });
 });

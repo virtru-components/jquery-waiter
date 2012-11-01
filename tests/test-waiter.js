@@ -178,5 +178,27 @@ describe('jquery.waiter - high level', function() {
       timeoutFunc();
     });
 
+    it('turns off all waiters', function(done) {
+      var waiterCalls2 = 0;
+
+      var callback2 = function() {
+        waiterCalls2 = 0;
+      };
+
+      testArea.waiter('on', 'div', callback);
+      testArea.waiter('on', 'div', callback2);
+
+      testArea.waiter('off', 'div');
+
+      shortDelay(function () {
+        testArea.append('<div></div>');
+        shortDelay(function() {
+          assert.equal(waiterCalls, 0);
+          assert.equal(waiterCalls2, 0);
+          done();
+        });
+      });
+    });
+
   });
 });
