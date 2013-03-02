@@ -1,7 +1,7 @@
 var assert = chai.assert;
 
 
-describe('jquery.waiter - high level', function() {
+describe('jquery.wait - high level', function() {
   /**
    * Delays function by short time
    */
@@ -47,9 +47,9 @@ describe('jquery.waiter - high level', function() {
     testAreaContainer.remove();
   });
 
-  describe("waiter('on', ...)", function() {
+  describe("wait('on', ...)", function() {
     it('detects a new div in testArea', function(done) {
-      testArea.waiter('on', 'div', function(matches) {
+      testArea.wait('on', 'div', function(matches) {
         matchIsElement(matches, 'div', 'test1');
         done();
       });
@@ -59,7 +59,7 @@ describe('jquery.waiter - high level', function() {
     });
 
     it('detects div#test2 appended in testArea', function(done) {
-      testArea.waiter('on', 'div#test2', function(matches) {
+      testArea.wait('on', 'div#test2', function(matches) {
         matchIsElement(matches, 'div', 'test2');
         done();
       });
@@ -70,14 +70,14 @@ describe('jquery.waiter - high level', function() {
 
     it('detects div#test3 already in the testArea', function(done) {
       testArea.append('<div id="test3"></div>');
-      testArea.waiter('on', 'div#test3', function(matches) {
+      testArea.wait('on', 'div#test3', function(matches) {
         matchIsElement(matches, 'div', 'test3');
         done();
       });
     });
 
     it('detects multiple divs added in the testArea', function(done) {
-      testArea.waiter('on', 'div', function(matches) {
+      testArea.wait('on', 'div', function(matches) {
         assert.lengthOf(matches, 3);
         done();
       });
@@ -87,7 +87,7 @@ describe('jquery.waiter - high level', function() {
     });
 
     it('detects div added with innerHTML', function(done) {
-      testArea.waiter('on', 'div', function(matches) {
+      testArea.wait('on', 'div', function(matches) {
         matchIsElement(matches, 'div', 'test5');
         done();
       });
@@ -99,7 +99,7 @@ describe('jquery.waiter - high level', function() {
 
     it('detects continuously', function(done) {
       var counter = 5
-      testArea.waiter('on', 'div', { continuous: true }, function(matches) {
+      testArea.wait('on', 'div', { continuous: true }, function(matches) {
         counter -= 1;
         if(counter == 0) {
           done();
@@ -117,50 +117,50 @@ describe('jquery.waiter - high level', function() {
     });
   });
 
-  describe("waiter('off', ...)", function() {
-    var waiterCalls = 0;
+  describe("wait('off', ...)", function() {
+    var waitCalls = 0;
     beforeEach(function() {
-      waiterCalls = 0;
+      waitCalls = 0;
     });
     
     function callback() {
-      waiterCalls += 1;
+      waitCalls += 1;
     };
 
     function simpleWaiter(selector) {
       selector = selector || 'div';
-      testArea.waiter('on', selector, callback);
+      testArea.wait('on', selector, callback);
     }
 
-    it('turns off a waiter that never runs', function() {
+    it('turns off a wait that never runs', function() {
       simpleWaiter('div');
-      testArea.waiter('off', 'div', callback);
-      assert.equal(waiterCalls, 0);
+      testArea.wait('off', 'div', callback);
+      assert.equal(waitCalls, 0);
     });
 
-    it('attempts to turn off a waiter after it is called', function(done) {
+    it('attempts to turn off a wait after it is called', function(done) {
       simpleWaiter('div');
       shortDelay(function() {
         testArea.append('<div></div>');
         shortDelay(function() {
-          testArea.waiter('off', 'div', callback);
-          assert.equal(waiterCalls, 1);
+          testArea.wait('off', 'div', callback);
+          assert.equal(waitCalls, 1);
           done();
         });
       });
     });
     
-    it('turns off a continuous waiter', function(done) {
-      testArea.waiter('on', 'span', { continuous: true }, callback);
+    it('turns off a continuous wait', function(done) {
+      testArea.wait('on', 'span', { continuous: true }, callback);
       
       var counter = 0;
 
       var finish = function() {
-        testArea.waiter('off', 'span', callback);
-        assert.equal(waiterCalls, 5);
+        testArea.wait('off', 'span', callback);
+        assert.equal(waitCalls, 5);
         testArea.append('<span></span>');
         shortDelay(function() {
-          assert.equal(waiterCalls, 5);
+          assert.equal(waitCalls, 5);
           done();
         });
       };
@@ -178,23 +178,23 @@ describe('jquery.waiter - high level', function() {
       timeoutFunc();
     });
 
-    it('turns off all waiters', function(done) {
-      var waiterCalls2 = 0;
+    it('turns off all waits', function(done) {
+      var waitCalls2 = 0;
 
       var callback2 = function() {
-        waiterCalls2 = 0;
+        waitCalls2 = 0;
       };
 
-      testArea.waiter('on', 'div', callback);
-      testArea.waiter('on', 'div', callback2);
+      testArea.wait('on', 'div', callback);
+      testArea.wait('on', 'div', callback2);
 
-      testArea.waiter('off', 'div');
+      testArea.wait('off', 'div');
 
       shortDelay(function () {
         testArea.append('<div></div>');
         shortDelay(function() {
-          assert.equal(waiterCalls, 0);
-          assert.equal(waiterCalls2, 0);
+          assert.equal(waitCalls, 0);
+          assert.equal(waitCalls2, 0);
           done();
         });
       });
