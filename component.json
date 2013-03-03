@@ -4,6 +4,7 @@
   "main": "./lib/jquery-waitformatch",
   "dependencies": {
     "dict.js": "https://github.com/virtru/dict.js.git",
+    "q": "*",
     "jquery": "*"
   }
 }

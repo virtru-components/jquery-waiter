@@ -115,6 +115,7 @@ describe('jquery.wait - high level', function() {
       };
       timeoutFunc();
     });
+
   });
 
   describe("wait('off', ...)", function() {
@@ -200,5 +201,24 @@ describe('jquery.wait - high level', function() {
       });
     });
 
+  });
+
+  describe("wait('async', ...)", function() {
+    it('waits asynchronously', function(done) {
+      testArea.wait('async', 'div')
+        .then(
+          function success(matches) {
+            matchIsElement(matches, 'div', 'test-async');
+            done();
+          },
+          function error(err) {
+            done(error);
+          }
+        )
+        .done(done);
+      shortDelay(function() {
+        testArea.append('<div id="test-async"></div>');
+      });
+    });
   });
 });

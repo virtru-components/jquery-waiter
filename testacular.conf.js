@@ -14,6 +14,7 @@ files = [
   'components/chai/chai.js',
   'components/underscore/underscore.js',
   'components/dict.js/lib/dict.js',
+  'components/q/q.js',
   'lib/jquery-waitformatch.js',
   'tests/*.js'
 ];
