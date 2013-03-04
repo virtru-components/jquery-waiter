@@ -67,7 +67,6 @@ describe('jquery.wait - high level', function() {
         testArea.append('<div id="test2"></div>');
       });
     });
-
     it('detects div#test3 already in the testArea', function(done) {
       testArea.append('<div id="test3"></div>');
       testArea.wait('on', 'div#test3', function(matches) {
@@ -77,12 +76,25 @@ describe('jquery.wait - high level', function() {
     });
 
     it('detects multiple divs added in the testArea', function(done) {
+      var counter = 0;
       testArea.wait('on', 'div', function(matches) {
         assert.lengthOf(matches, 3);
         done();
       });
       shortDelay(function() {
-        testArea.append('<div><div></div><div></div></div>');
+        testArea.append('<div></div><div></div><div></div>');
+      });
+    });
+
+    it('detects nested div that is added', function(done) {
+      var counter = 0;
+      testArea.wait('on', 'div.hello', function(matches) {
+        matchIsElement(matches, 'div', 'topoftest');
+        done();
+      });
+
+      shortDelay(function() {
+        testArea.append('<div id="topoftest"><div><div class="hello" id="sometest">&nbsp;</div></div></div>');
       });
     });
 
@@ -94,6 +106,19 @@ describe('jquery.wait - high level', function() {
       shortDelay(function() {
         var rawTestAreaEl = testArea[0];
         rawTestAreaEl.innerHTML = '<div id="test5"></div>';
+      });
+    });
+
+    it('detects nested div that is added with innerHTML', function(done) {
+      var counter = 0;
+      testArea.wait('on', 'div.hello', function(matches) {
+        matchIsElement(matches, 'div', 'topoftest');
+        done();
+      });
+
+      shortDelay(function() {
+        var rawTestAreaEl = testArea[0];
+        rawTestAreaEl.innerHTML = '<div id="topoftest"><div><div class="hello" id="sometest">&nbsp;</div></div></div>';
       });
     });
 
@@ -220,5 +245,11 @@ describe('jquery.wait - high level', function() {
         testArea.append('<div id="test-async"></div>');
       });
     });
+
+    it('tries to wait continuously but throws an error', function() {
+      assert.throws(function() {
+        testArea.wait('async', 'div', { continuous: true })
+      }, /Cannot .*/);
+    })
   });
 });
