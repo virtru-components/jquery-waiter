@@ -141,7 +141,15 @@ describe('jquery.wait - high level', function() {
       timeoutFunc();
     });
 
-
+    it('does no selector filtering', function(done) {
+      testArea.wait('on', null, function(added, removed) {
+        matchIsElement(added, 'span', 'hello1');
+        done();
+      });
+      shortDelay(function() {
+        testArea.append('<span id="hello1"></span>');
+      });
+    });
   });
 
   describe('wait for removal', function() {
