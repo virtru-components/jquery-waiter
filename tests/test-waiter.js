@@ -146,10 +146,8 @@ describe('jquery.wait - high level', function() {
 
   describe('wait for removal', function() {
     it('detects a div being removed', function(done) {
-      console.log("wait for removal");
       var toRemove = $('<span id="test7"></span>');
       toRemove.appendTo(testArea);
-      console.log("ASDFAFAFAF111111111111111111");
       testArea.wait('on', 'span', { includeRemoved: true }, function(added, removed) {
         matchIsElement(removed, 'span', 'test7');
         done();
