@@ -67,6 +67,7 @@ describe('jquery.wait - high level', function() {
         testArea.append('<div id="test2"></div>');
       });
     });
+
     it('detects div#test3 already in the testArea', function(done) {
       testArea.append('<div id="test3"></div>');
       testArea.wait('on', 'div#test3', function(matches) {
@@ -130,7 +131,6 @@ describe('jquery.wait - high level', function() {
           done();
         }
       });
-
       var timeoutId;
       var timeoutFunc = function() {
         testArea.append('<div></div>');
@@ -141,6 +141,24 @@ describe('jquery.wait - high level', function() {
       timeoutFunc();
     });
 
+
+  });
+
+  describe('wait for removal', function() {
+    it('detects a div being removed', function(done) {
+      console.log("wait for removal");
+      var toRemove = $('<span id="test7"></span>');
+      toRemove.appendTo(testArea);
+      console.log("ASDFAFAFAF111111111111111111");
+      testArea.wait('on', 'span', { includeRemoved: true }, function(added, removed) {
+        matchIsElement(removed, 'span', 'test7');
+        done();
+      });
+      mediumDelay(function() {
+        toRemove.remove();
+      });
+    });
+    
   });
 
   describe("wait('off', ...)", function() {
@@ -250,6 +268,6 @@ describe('jquery.wait - high level', function() {
       assert.throws(function() {
         testArea.wait('async', 'div', { continuous: true })
       }, /Cannot .*/);
-    })
+    });
   });
 });
