@@ -1,10 +1,19 @@
 {
-  "name": "jquery-waitformatch",
-  "version": "0.1.0",
-  "main": "./lib/jquery-waitformatch",
+  "name": "jquery-waiter",
+  "repo": "virtru/jquery-waiter",
+  "version": "0.2.0",
   "dependencies": {
-    "dict.js": "https://github.com/virtru/dict.js.git",
-    "q": "*",
-    "jquery": "*"
-  }
+    "component/jquery": "*",
+    "virtru/dict.js": "*",
+    "virtru-components/q": "*"
+  },
+  "main": "./lib/jquery-waiter.js",
+  "scripts": [
+    "./lib/jquery-waiter.js",
+  ],
+  "testScripts": [
+    "tests/setup.js",
+    "tests/test-waiter.js",
+    "tests/test-waitermap.js"
+  ]
 }
