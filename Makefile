@@ -1,8 +1,9 @@
-dev:
-	@bower install
+develop:
+	@component install --dev
 
 test: 
-	@testacular start --single-run
+	@component test-build
+	@karma start --single-run
 
 interactive-test: 
-	@testacular start
+	@karma start

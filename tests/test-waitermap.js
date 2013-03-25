@@ -1,7 +1,8 @@
-var assert = chai.assert;
+var assert = require('chai').assert;
+var WaiterMap = require('../lib/waiter-map').WaiterMap;
+var _ = require('underscore');
 
 describe('WaiterMap - internal class', function() {
-  var WaiterMap = $testable.WaiterMap;
   var f1 = function() {};
   var f2 = _.bind(f1, {});
   var f3 = _.bind(function() {}, {});

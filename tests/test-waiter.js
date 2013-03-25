@@ -1,4 +1,6 @@
-var assert = chai.assert;
+var assert = require('chai').assert,
+    waiter = require('../lib/jquery-waiter'),
+    $ = require('jquery');
 
 
 describe('jquery.wait - high level', function() {

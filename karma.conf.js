@@ -10,13 +10,8 @@ basePath = './';
 files = [
   MOCHA,
   MOCHA_ADAPTER,
-  'components/jquery/jquery.js',
-  'components/chai/chai.js',
-  'components/underscore/underscore.js',
-  'components/dict.js/lib/dict.js',
-  'components/q/q.js',
-  'lib/jquery-waitformatch.js',
-  'tests/*.js'
+  'build/test-build.js',
+  'build/test-loader.js'
 ];
 
 

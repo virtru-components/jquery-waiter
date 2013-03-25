@@ -7,9 +7,14 @@
     "virtru/dict.js": "*",
     "virtru-components/q": "*"
   },
-  "main": "./lib/jquery-waiter.js",
+  "development": {
+    "virtru-components/chai": "*",
+    "component/underscore": "*"
+  },
+  "main": "lib/jquery-waiter.js",
   "scripts": [
-    "./lib/jquery-waiter.js",
+    "lib/jquery-waiter.js",
+    "lib/waiter-map.js"
   ],
   "testScripts": [
     "tests/setup.js",
