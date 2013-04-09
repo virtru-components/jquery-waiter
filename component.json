@@ -1,7 +1,7 @@
 {
   "name": "jquery-waiter",
   "repo": "virtru/jquery-waiter",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "dependencies": {
     "component/jquery": "*",
     "virtru/dict.js": "*",
@@ -14,7 +14,8 @@
   "main": "lib/jquery-waiter.js",
   "scripts": [
     "lib/jquery-waiter.js",
-    "lib/waiter-map.js"
+    "lib/waiter-map.js",
+    "lib/compat-mutation-observer.js"
   ],
   "testScripts": [
     "tests/setup.js",

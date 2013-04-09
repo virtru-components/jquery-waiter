@@ -2,7 +2,6 @@ var assert = require('chai').assert,
     waiter = require('../lib/jquery-waiter'),
     $ = require('jquery');
 
-
 describe('jquery.wait - high level', function() {
   /**
    * Delays function by short time
@@ -155,6 +154,10 @@ describe('jquery.wait - high level', function() {
   });
 
   describe('wait for removal', function() {
+    // THIS CANNOT BE RUN IF THE BROWSER DOES NOT ALLOW NATIVE
+    if(!waiter.isNative) {
+      return;
+    }
     it('detects a div being removed', function(done) {
       var toRemove = $('<span id="test7"></span>');
       toRemove.appendTo(testArea);
