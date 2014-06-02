@@ -1,11 +1,11 @@
 {
   "name": "jquery-waiter",
   "repo": "virtru/jquery-waiter",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "dependencies": {
-    "component/jquery": "*",
-    "virtru/dict.js": "*",
-    "virtru-components/q": "*"
+    "components/jquery": "1.9.1",
+    "virtru/dict.js": "0.2.0",
+    "virtru-components/q": "0.9.2"
   },
   "development": {
     "virtru-components/chai": "*",
