@@ -3,7 +3,7 @@
   "version": "0.4.0",
   "dependencies": {
     "jquery": "2.1.0",
-    "virtru/dict.js": "git+ssh://git@github.com:virtru/dict#0.2.0",
+    "dict.js": "git+ssh://git@github.com:virtru/dict.js#0.2.0",
     "q": "v0.9.2"
   }
 }
